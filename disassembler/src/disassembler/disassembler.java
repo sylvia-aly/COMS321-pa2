@@ -53,16 +53,36 @@ public class disassembler {
     }
     
     public static void convertBinaryToAssembly(ArrayList<String> instructions) {
-    	
+    	assemblyInstructions = new ArrayList<>(instructions.size());
+        for (String instruction : instructions) {
+            String inst = decode(instruction);
+            assemblyInstructions.add(inst);
+        }
     }
     
     public static void addLabels() {
     	
     }
     
+    public static String decode(String instruction) {
+        String returnInstruction = "";
+        String opcode = instruction.substring(0, 6);
+        
+        //TODO: switch case for each type of instruction based on opcode
+        
+        return returnInstruction;
+    }
+    
     public static void printAssembly(ArrayList<String> instructions) {
         for (String instruction : instructions) {
             System.out.println(instruction);
         }
+    }
+    
+    public static int getTwosComplement(String binary) {
+        String invert = invert(binary);
+        int dec = Integer.parseInt(invert, 2);
+        dec = (dec + 1) * -1;
+        return dec;
     }
 }
