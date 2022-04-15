@@ -25,64 +25,95 @@ import java.util.*;
  */
 
 public class disassembler {
-	private static ArrayList<String> assemblyInstructions;
-    private static ArrayList<String> instructionsThatNeedLabels = new ArrayList<>();
-    private static ArrayList<Integer> posOfLabels = new ArrayList<>();
-    //private static HashMap<String, String> listOfLabels = new HashMap<>();
-    
-    public static void main(String[] args) throws IOException {
-        instructionsThatNeedLabels = new ArrayList<>();
-        posOfLabels = new ArrayList<>();
-        //listOfLabels = new HashMap<>();
-        String instruction = "";
-        ArrayList<String> binary = new ArrayList<>();
-        File file = new File(args[0]);
-        FileInputStream sc = new FileInputStream(file);
-        byte[] inst = new byte[4];
-        while (sc.read(inst) != -1) {
-            for (int i = 0; i < 4; i++) {
-                // convert byte to binary string representation
-                instruction += String.format("%8s", Integer.toBinaryString(inst[i] & 0xFF)).replace(' ', '0');
-            }
-            binary.add(instruction);
-            instruction = "";
-        }
-        convertBinaryToAssembly(binary);
-        addLabels();
-        printAssembly(assemblyInstructions);
-    }
-    
-    public static void convertBinaryToAssembly(ArrayList<String> instructions) {
-    	assemblyInstructions = new ArrayList<>(instructions.size());
-        for (String instruction : instructions) {
-            String inst = decode(instruction);
-            assemblyInstructions.add(inst);
-        }
-    }
-    
-    public static void addLabels() {
-    	
-    }
-    
-    public static String decode(String instruction) {
-        String returnInstruction = "";
-        String opcode = instruction.substring(0, 6);
-        
-        //TODO: switch case for each type of instruction based on opcode
-        
-        return returnInstruction;
-    }
-    
-    public static void printAssembly(ArrayList<String> instructions) {
-        for (String instruction : instructions) {
-            System.out.println(instruction);
-        }
-    }
-    
-    public static int getTwosComplement(String binary) {
-        String invert = invert(binary);
-        int dec = Integer.parseInt(invert, 2);
-        dec = (dec + 1) * -1;
-        return dec;
-    }
+	private static ArrayList<String> assemblyInstructions = new ArrayList<>();
+	private static ArrayList<String> instructionsThatNeedLabels = new ArrayList<>();
+	private static ArrayList<Integer> posOfLabels = new ArrayList<>();
+	//private static HashMap<String, String> listOfLabels = new HashMap<>();
+
+	public static void main(String[] args) throws IOException {
+		instructionsThatNeedLabels = new ArrayList<>();
+		posOfLabels = new ArrayList<>();
+		//listOfLabels = new HashMap<>();
+		String instruction = "";
+		ArrayList<String> binary = new ArrayList<>();
+		File file = new File(args[0]);
+		FileInputStream sc = new FileInputStream(file);
+		byte[] inst = new byte[4];
+		while (sc.read(inst) != -1) {
+			for (int i = 0; i < 4; i++) {
+				// convert byte to binary string representation
+				instruction += String.format("%8s", Integer.toBinaryString(inst[i] & 0xFF)).replace(' ', '0');
+			}
+			binary.add(instruction);
+			instruction = "";
+		}
+		convertBinaryToAssembly(binary);
+		addLabels();
+		printAssembly(assemblyInstructions);
+	}
+
+	public static void convertBinaryToAssembly(ArrayList<String> instructions) {
+		assemblyInstructions = new ArrayList<>(instructions.size());
+		for (String instruction : instructions) {
+			String inst = decode(instruction);
+			assemblyInstructions.add(inst);
+		}
+	}
+
+	public static void addLabels() {
+
+	}
+
+	public static int getTwosComplement(String binary) {
+		String invert = invert(binary);
+		int dec = Integer.parseInt(invert, 2);
+		dec = (dec + 1) * -1;
+		return dec;
+	}
+
+	public static String Itype(String instruction, String mnemonic) {
+		String assembly = mnemonic;
+		String imm = instruction.substring(10, 22);
+		if(imm.charAt(0) == '1'){
+			imm = String.valueOf(getTwosComplement(imm));
+		}else{
+			imm = String.valueOf(Integer.parseInt(imm, 2));
+		}
+		String rn = instruction.substring(22, 27);
+		rn = register(rn);
+		String rd = instruction.substring(27, 32);
+		rd = register(rd);
+		assembly = assembly + " " + rd + ", " + rn + ", #" + imm;
+		return assembly;
+	}
+
+	public static String decode(String instruction) {
+		String returnInstruction = "";
+
+		//TODO: switch case for each type of instruction based on opcode
+
+		String opcode = instruction.substring(0, 10);
+		switch (opcode) {
+		case "1001000100" ->  // addi
+		returnInstruction = Itype(instruction, "ADDI");
+		case "1001001000" ->  // andi
+		returnInstruction = Itype(instruction, "ANDI");
+		case "1101001000" ->  // eori
+		returnInstruction = Itype(instruction, "EORI");
+		case "1011001000" ->  // orri
+		returnInstruction = Itype(instruction, "ORRI");
+		case "1101000100" ->  // subi
+		returnInstruction = Itype(instruction, "SUBI");
+		case "1111000100" ->  // subis
+		returnInstruction = Itype(instruction, "SUBIS");
+
+		return returnInstruction;
+		}
+
+		public static void printAssembly(ArrayList<String> instructions) {
+			for (String instruction : instructions) {
+				System.out.println(instruction);
+			}
+		}
+	}
 }
