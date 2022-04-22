@@ -28,12 +28,12 @@ public class disassembler {
 	private static ArrayList<String> assemblyInstructions = new ArrayList<>();
 	private static ArrayList<String> instructionsThatNeedLabels = new ArrayList<>();
 	private static ArrayList<Integer> posOfLabels = new ArrayList<>();
-	//private static HashMap<String, String> listOfLabels = new HashMap<>();
+	private static HashMap<String, String> listOfLabels = new HashMap<>();
 
 	public static void main(String[] args) throws IOException {
 		instructionsThatNeedLabels = new ArrayList<>();
 		posOfLabels = new ArrayList<>();
-		//listOfLabels = new HashMap<>();
+		listOfLabels = new HashMap<>();
 		String instruction = "";
 		ArrayList<String> binary = new ArrayList<>();
 		File file = new File(args[0]);
@@ -115,5 +115,13 @@ public class disassembler {
 				System.out.println(instruction);
 			}
 		}
+		
+		public static String invert(String binary) {
+	        String result = binary;
+	        result = result.replace("0", " ");
+	        result = result.replace("1", "0");
+	        result = result.replace(" ", "1");
+	        return result;
+	    }
 	}
 }
