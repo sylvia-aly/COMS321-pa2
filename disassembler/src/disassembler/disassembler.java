@@ -109,19 +109,19 @@ public class disassembler {
 
 		return returnInstruction;
 		}
-
-		public static void printAssembly(ArrayList<String> instructions) {
-			for (String instruction : instructions) {
-				System.out.println(instruction);
-			}
-		}
-		
-		public static String invert(String binary) {
-	        String result = binary;
-	        result = result.replace("0", " ");
-	        result = result.replace("1", "0");
-	        result = result.replace(" ", "1");
-	        return result;
-	    }
 	}
+	
+	public static void printAssembly(ArrayList<String> instructions) {
+		for (String instruction : instructions) {
+			System.out.println(instruction);
+		}
+	}
+	
+	public static String invert(String binary) {
+        String result = binary;
+        result = result.replace("0", " ");
+        result = result.replace("1", "0");
+        result = result.replace(" ", "1");
+        return result;
+    }
 }
