@@ -124,4 +124,14 @@ public class disassembler {
         result = result.replace(" ", "1");
         return result;
     }
+	
+	public static void addLabels() {
+        Set<Integer> set = new HashSet<>(posOfLabels);
+        posOfLabels.clear();
+        posOfLabels.addAll(set);
+        posOfLabels.sort(Collections.reverseOrder());
+        addToSet();
+        putBranch();
+        putLabels();
+    }
 }
