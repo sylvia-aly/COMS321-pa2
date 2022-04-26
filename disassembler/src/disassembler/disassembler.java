@@ -60,10 +60,6 @@ public class disassembler {
 		}
 	}
 
-	public static void addLabels() {
-
-	}
-
 	public static int getTwosComplement(String binary) {
 		String invert = invert(binary);
 		int dec = Integer.parseInt(invert, 2);
@@ -111,6 +107,17 @@ public class disassembler {
 		}
 	}
 	
+	public static String register(String reg) {
+        String number = String.valueOf(Integer.parseInt(reg, 2));
+        return switch (number) {
+            case "28" -> "SP";
+            case "29" -> "FP";
+            case "30" -> "LR";
+            case "31" -> "XZR";
+            default -> "X" + number;
+        };
+    }
+	
 	public static void printAssembly(ArrayList<String> instructions) {
 		for (String instruction : instructions) {
 			System.out.println(instruction);
@@ -133,5 +140,24 @@ public class disassembler {
         addToSet();
         putBranch();
         putLabels();
+    }
+	
+	public static void addToSet(){
+        for (int i = 0; i < posOfLabels.size(); i++) {
+            int currentIndex = posOfLabels.get(i) - 1;
+            listOfLabels.put(currentIndex + "", "Label" + (posOfLabels.size() - i));
+        }
+    }
+	
+	public static void putLabels(){
+        for (int i = 0; i < posOfLabels.size(); i++) {
+            int currentIndex = posOfLabels.get(i) - 1;
+            assemblyInstructions.add(currentIndex, "Label" + (posOfLabels.size() - i) + ":");
+        }
+    }
+	
+	public static void addIndex(int pos, String replacement) {
+        posOfLabels.add(pos);
+        instructionsThatNeedLabels.add(replacement);
     }
 }
