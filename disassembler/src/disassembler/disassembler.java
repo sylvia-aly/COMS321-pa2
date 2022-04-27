@@ -132,6 +132,30 @@ public class disassembler {
         return result;
     }
 	
+	public static void putBranch(){
+        for (String instructionsThatNeedLabel : instructionsThatNeedLabels) {
+            int pos = assemblyInstructions.indexOf(instructionsThatNeedLabel);
+            String instToAddLabel = assemblyInstructions.get(pos);
+            char current;
+            int stringPos = instToAddLabel.length() - 1;
+            int lengthOfReplacement = 0;
+            boolean replacementMade = false;
+            while (!replacementMade) {
+                current = instToAddLabel.charAt(stringPos);
+                if (current == ' ') {
+                    replacementMade = true;
+                } else {
+                    lengthOfReplacement++;
+                    stringPos--;
+                }
+            }
+            int index = Integer.parseInt(instToAddLabel.substring(instToAddLabel.length() - lengthOfReplacement));
+            String replacement = listOfLabels.get(index + pos + "");
+            instToAddLabel = instToAddLabel.substring(0, instToAddLabel.length() - lengthOfReplacement) + replacement;
+            assemblyInstructions.set(pos, instToAddLabel);
+        }
+    }
+	
 	public static void addLabels() {
         Set<Integer> set = new HashSet<>(posOfLabels);
         posOfLabels.clear();
@@ -161,3 +185,4 @@ public class disassembler {
         instructionsThatNeedLabels.add(replacement);
     }
 }
+
