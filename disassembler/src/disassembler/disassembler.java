@@ -106,83 +106,83 @@ public class disassembler {
 		return returnInstruction;
 		}
 	}
-	
+
 	public static String register(String reg) {
-        String number = String.valueOf(Integer.parseInt(reg, 2));
-        return switch (number) {
-            case "28" -> "SP";
-            case "29" -> "FP";
-            case "30" -> "LR";
-            case "31" -> "XZR";
-            default -> "X" + number;
-        };
-    }
-	
+		String number = String.valueOf(Integer.parseInt(reg, 2));
+		return switch (number) {
+		case "28" -> "SP";
+		case "29" -> "FP";
+		case "30" -> "LR";
+		case "31" -> "XZR";
+		default -> "X" + number;
+		};
+	}
+
 	public static void printAssembly(ArrayList<String> instructions) {
 		for (String instruction : instructions) {
 			System.out.println(instruction);
 		}
 	}
-	
+
 	public static String invert(String binary) {
-        String result = binary;
-        result = result.replace("0", " ");
-        result = result.replace("1", "0");
-        result = result.replace(" ", "1");
-        return result;
-    }
-	
+		String result = binary;
+		result = result.replace("0", " ");
+		result = result.replace("1", "0");
+		result = result.replace(" ", "1");
+		return result;
+	}
+
 	public static void putBranch(){
-        for (String instructionsThatNeedLabel : instructionsThatNeedLabels) {
-            int pos = assemblyInstructions.indexOf(instructionsThatNeedLabel);
-            String instToAddLabel = assemblyInstructions.get(pos);
-            char current;
-            int stringPos = instToAddLabel.length() - 1;
-            int lengthOfReplacement = 0;
-            boolean replacementMade = false;
-            while (!replacementMade) {
-                current = instToAddLabel.charAt(stringPos);
-                if (current == ' ') {
-                    replacementMade = true;
-                } else {
-                    lengthOfReplacement++;
-                    stringPos--;
-                }
-            }
-            int index = Integer.parseInt(instToAddLabel.substring(instToAddLabel.length() - lengthOfReplacement));
-            String replacement = listOfLabels.get(index + pos + "");
-            instToAddLabel = instToAddLabel.substring(0, instToAddLabel.length() - lengthOfReplacement) + replacement;
-            assemblyInstructions.set(pos, instToAddLabel);
-        }
-    }
-	
+		for (String instructionsThatNeedLabel : instructionsThatNeedLabels) {
+			int pos = assemblyInstructions.indexOf(instructionsThatNeedLabel);
+			String instToAddLabel = assemblyInstructions.get(pos);
+			char current;
+			int stringPos = instToAddLabel.length() - 1;
+			int lengthOfReplacement = 0;
+			boolean replacementMade = false;
+			while (!replacementMade) {
+				current = instToAddLabel.charAt(stringPos);
+				if (current == ' ') {
+					replacementMade = true;
+				} else {
+					lengthOfReplacement++;
+					stringPos--;
+				}
+			}
+			int index = Integer.parseInt(instToAddLabel.substring(instToAddLabel.length() - lengthOfReplacement));
+			String replacement = listOfLabels.get(index + pos + "");
+			instToAddLabel = instToAddLabel.substring(0, instToAddLabel.length() - lengthOfReplacement) + replacement;
+			assemblyInstructions.set(pos, instToAddLabel);
+		}
+	}
+
 	public static void addLabels() {
-        Set<Integer> set = new HashSet<>(posOfLabels);
-        posOfLabels.clear();
-        posOfLabels.addAll(set);
-        posOfLabels.sort(Collections.reverseOrder());
-        addToSet();
-        putBranch();
-        putLabels();
-    }
-	
+		Set<Integer> set = new HashSet<>(posOfLabels);
+		posOfLabels.clear();
+		posOfLabels.addAll(set);
+		posOfLabels.sort(Collections.reverseOrder());
+		addToSet();
+		putBranch();
+		putLabels();
+	}
+
 	public static void addToSet(){
-        for (int i = 0; i < posOfLabels.size(); i++) {
-            int currentIndex = posOfLabels.get(i) - 1;
-            listOfLabels.put(currentIndex + "", "Label" + (posOfLabels.size() - i));
-        }
-    }
-	
+		for (int i = 0; i < posOfLabels.size(); i++) {
+			int currentIndex = posOfLabels.get(i) - 1;
+			listOfLabels.put(currentIndex + "", "Label" + (posOfLabels.size() - i));
+		}
+	}
+
 	public static void putLabels(){
-        for (int i = 0; i < posOfLabels.size(); i++) {
-            int currentIndex = posOfLabels.get(i) - 1;
-            assemblyInstructions.add(currentIndex, "Label" + (posOfLabels.size() - i) + ":");
-        }
-    }
-	
+		for (int i = 0; i < posOfLabels.size(); i++) {
+			int currentIndex = posOfLabels.get(i) - 1;
+			assemblyInstructions.add(currentIndex, "Label" + (posOfLabels.size() - i) + ":");
+		}
+	}
+
 	public static void addIndex(int pos, String replacement) {
-        posOfLabels.add(pos);
-        instructionsThatNeedLabels.add(replacement);
-    }
+		posOfLabels.add(pos);
+		instructionsThatNeedLabels.add(replacement);
+	}
 }
 
