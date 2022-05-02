@@ -8,20 +8,20 @@ import java.util.*;
  * Given in the piazza post of programming assignment 2
  * 
  * //This is in main():
-    if (binary) {
-      fd = open(argv[1], O_RDONLY);
-      fstat(fd, &buf);
-      program = mmap(NULL, buf.st_size, PROT_READ | PROT_WRITE,
-                     MAP_PRIVATE, fd, 0);
-      bprogram = calloc(buf.st_size / 4, sizeof (*bprogram));
-      for (i = 0; i < (buf.st_size / 4); i++) {
-        program[i] = be32toh(program[i]);
-        decode(program[i], bprogram + i);
-      }
-      emulate(bprogram, buf.st_size / 4, &m);
+ï¿½ ï¿½ if (binary) {
+ï¿½ ï¿½ ï¿½ fd = open(argv[1], O_RDONLY);
+ï¿½ ï¿½ ï¿½ fstat(fd, &buf);
+ï¿½ ï¿½ ï¿½ program = mmap(NULL, buf.st_size, PROT_READ | PROT_WRITE,
+ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½ ï¿½MAP_PRIVATE, fd, 0);
+ï¿½ ï¿½ ï¿½ bprogram = calloc(buf.st_size / 4, sizeof (*bprogram));
+ï¿½ ï¿½ ï¿½ for (i = 0; i < (buf.st_size / 4); i++) {
+ï¿½ ï¿½ ï¿½ ï¿½ program[i] = be32toh(program[i]);
+ï¿½ ï¿½ ï¿½ ï¿½ decode(program[i], bprogram + i);
+ï¿½ ï¿½ ï¿½ }
+ï¿½ ï¿½ ï¿½ emulate(bprogram, buf.st_size / 4, &m);
 
-      return 0;
-    }
+ï¿½ ï¿½ ï¿½ return 0;
+ï¿½ ï¿½ }
  */
 
 public class disassembler {
@@ -88,7 +88,9 @@ public class disassembler {
 
 		//TODO: switch case for each type of instruction based on opcode
 
+		if(instruction.length == 10) {
 		String opcode = instruction.substring(0, 10);
+		
 		switch (opcode) {
 		case "1001000100" ->  // addi
 		returnInstruction = Itype(instruction, "ADDI");
@@ -102,7 +104,45 @@ public class disassembler {
 		returnInstruction = Itype(instruction, "SUBI");
 		case "1111000100" ->  // subis
 		returnInstruction = Itype(instruction, "SUBIS");
-
+		
+		}
+		
+		//things that I have added
+		if(instruction.length == 11) {
+			String opcode = instruction.substring(0, 11);
+			
+			switch (opcode) {
+			case "10001011000" ->  // add
+			returnInstruction = Itype(instruction, "ADD");
+			case "10001010000" ->  // and
+			returnInstruction = Itype(instruction, "AND");
+			case "11010110000" -> //BR
+			returnInstruction = Itype (instruction, "BR");
+			case "11001010000" -> //EOR
+			returnInstruction = Itype (instruction, "EOR");
+			case "11111000010" -> //LDUR 
+			returnInstruction = Itype (instruction, "LDUR");
+			case "11010011011" -> //LSL
+			returnInstruction = Itype (instruction, "LSL");
+			case "11010011010" -> //LSR
+			returnInstruction = Itype (instruction, "LSR");
+			case "10101010000" -> //ORR
+			returnInstruction = Itype (instruction, "ORR");
+			case "11111000000" -> //STUR
+			returnInstruction = Itype (instruction, "STUR");
+			case "11001011000" -> //SUB
+			returnInstruction = Itype (instruction, "SUB");
+			case "11101011000" -> //SUBS
+			returnInstruction = Itype (instruction, "SUB");
+			case "10011011000" -> //MUL
+			returnInstruction = Itype (instruction, "MUL");
+			
+			
+		}
+		
+	
+	
+		
 		return returnInstruction;
 		}
 	}
