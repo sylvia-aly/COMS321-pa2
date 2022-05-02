@@ -85,66 +85,80 @@ public class disassembler {
 
 	public static String decode(String instruction) {
 		String returnInstruction = "";
-
-		//TODO: switch case for each type of instruction based on opcode
-
-		if(instruction.length == 10) {
-		String opcode = instruction.substring(0, 10);
-		
+		String opcode = instruction.substring(0, 6);
 		switch (opcode) {
-		case "1001000100" ->  // addi
-		returnInstruction = Itype(instruction, "ADDI");
-		case "1001001000" ->  // andi
-		returnInstruction = Itype(instruction, "ANDI");
-		case "1101001000" ->  // eori
-		returnInstruction = Itype(instruction, "EORI");
-		case "1011001000" ->  // orri
-		returnInstruction = Itype(instruction, "ORRI");
-		case "1101000100" ->  // subi
-		returnInstruction = Itype(instruction, "SUBI");
-		case "1111000100" ->  // subis
-		returnInstruction = Itype(instruction, "SUBIS");
-		
+			case "000101" ->  // b
+				returnInstruction = Btype(instruction, "B");
+			case "100101" ->  // bl
+				returnInstruction = Btype(instruction, "BL");
+			default -> {
+				opcode = instruction.substring(0, 8);
+				switch (opcode) {
+					case "10110101" ->  // cbnz
+						returnInstruction = CBtype(instruction, "CBNZ");
+					case "10110100" ->  // cbz
+						returnInstruction = CBtype(instruction, "CBZ");
+					case "01010100" ->  // b.cond
+						returnInstruction = CBtype(instruction, "B.");
+					default -> {
+						opcode = instruction.substring(0, 10);
+						switch (opcode) {
+							case "1001000100" ->  // addi
+								returnInstruction = Itype(instruction, "ADDI");
+							case "1001001000" ->  // andi
+								returnInstruction = Itype(instruction, "ANDI");
+							case "1101001000" ->  // eori
+								returnInstruction = Itype(instruction, "EORI");
+							case "1011001000" ->  // orri
+								returnInstruction = Itype(instruction, "ORRI");
+							case "1101000100" ->  // subi
+								returnInstruction = Itype(instruction, "SUBI");
+							case "1111000100" ->  // subis
+								returnInstruction = Itype(instruction, "SUBIS");
+							//things that I have added
+							default -> {
+								opcode = instruction.substring(0, 11);
+								switch (opcode) {
+									case "10001011000" ->  // add
+										returnInstruction = Itype(instruction, "ADD");
+									case "10001010000" ->  // and
+										returnInstruction = Itype(instruction, "AND");
+									case "11010110000" -> //BR
+										returnInstruction = Itype (instruction, "BR");
+									case "11001010000" -> //EOR
+										returnInstruction = Itype (instruction, "EOR");
+									case "11111000010" -> //LDUR 
+										returnInstruction = Itype (instruction, "LDUR");
+									case "11010011011" -> //LSL
+										returnInstruction = Itype (instruction, "LSL");
+									case "11010011010" -> //LSR
+										returnInstruction = Itype (instruction, "LSR");
+									case "10101010000" -> //ORR
+										returnInstruction = Itype (instruction, "ORR");
+									case "11111000000" -> //STUR
+										returnInstruction = Itype (instruction, "STUR");
+									case "11001011000" ->  // sub
+										returnInstruction = Rtype(instruction, "SUB");
+									case "11101011000" ->  // subs
+										returnInstruction = Rtype(instruction, "SUBS");
+									case "10011011000" -> //MUL
+										returnInstruction = Itype (instruction, "MUL");
+									case "11111111101" ->  // prnt
+										returnInstruction = Rtype(instruction, "PRNT");
+									case "11111111100" ->  // prnl
+										returnInstruction = Rtype(instruction, "PRNL");
+									case "11111111110" ->  // dump
+										returnInstruction = Rtype(instruction, "DUMP");
+									case "11111111111" ->  // halt
+										returnInstruction = Rtype(instruction, "HALT");
+								}
+							}
+						}
+					}
+				}
+			}
 		}
-		
-		//things that I have added
-		if(instruction.length == 11) {
-			String opcode = instruction.substring(0, 11);
-			
-			switch (opcode) {
-			case "10001011000" ->  // add
-			returnInstruction = Itype(instruction, "ADD");
-			case "10001010000" ->  // and
-			returnInstruction = Itype(instruction, "AND");
-			case "11010110000" -> //BR
-			returnInstruction = Itype (instruction, "BR");
-			case "11001010000" -> //EOR
-			returnInstruction = Itype (instruction, "EOR");
-			case "11111000010" -> //LDUR 
-			returnInstruction = Itype (instruction, "LDUR");
-			case "11010011011" -> //LSL
-			returnInstruction = Itype (instruction, "LSL");
-			case "11010011010" -> //LSR
-			returnInstruction = Itype (instruction, "LSR");
-			case "10101010000" -> //ORR
-			returnInstruction = Itype (instruction, "ORR");
-			case "11111000000" -> //STUR
-			returnInstruction = Itype (instruction, "STUR");
-			case "11001011000" -> //SUB
-			returnInstruction = Itype (instruction, "SUB");
-			case "11101011000" -> //SUBS
-			returnInstruction = Itype (instruction, "SUB");
-			case "10011011000" -> //MUL
-			returnInstruction = Itype (instruction, "MUL");
-			
-			
-		}
-		
-	
-	
-		
-		return returnInstruction;
-		}
+		return returnInstruction;		
 	}
 
 	public static String register(String reg) {
