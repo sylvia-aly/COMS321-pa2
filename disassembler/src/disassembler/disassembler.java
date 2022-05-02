@@ -99,7 +99,7 @@ public class disassembler {
 					case "10110100" ->  // cbz
 						returnInstruction = CBtype(instruction, "CBZ");
 					case "01010100" ->  // b.cond
-						returnInstruction = CBtype(instruction, "B.");
+						returnInstruction = CBtype(instruction, "B."); 
 					default -> {
 						opcode = instruction.substring(0, 10);
 						switch (opcode) {
@@ -120,29 +120,29 @@ public class disassembler {
 								opcode = instruction.substring(0, 11);
 								switch (opcode) {
 									case "10001011000" ->  // add
-										returnInstruction = Itype(instruction, "ADD");
+										returnInstruction = Rtype(instruction, "ADD");
 									case "10001010000" ->  // and
-										returnInstruction = Itype(instruction, "AND");
+										returnInstruction = Rtype(instruction, "AND");
 									case "11010110000" -> //BR
-										returnInstruction = Itype (instruction, "BR");
+										returnInstruction = Rtype (instruction, "BR");
 									case "11001010000" -> //EOR
-										returnInstruction = Itype (instruction, "EOR");
+										returnInstruction = Rtype (instruction, "EOR");
 									case "11111000010" -> //LDUR 
-										returnInstruction = Itype (instruction, "LDUR");
+										returnInstruction = Dtype (instruction, "LDUR");
 									case "11010011011" -> //LSL
-										returnInstruction = Itype (instruction, "LSL");
+										returnInstruction = Rtype (instruction, "LSL");
 									case "11010011010" -> //LSR
-										returnInstruction = Itype (instruction, "LSR");
+										returnInstruction = Rtype (instruction, "LSR");
 									case "10101010000" -> //ORR
-										returnInstruction = Itype (instruction, "ORR");
+										returnInstruction = Rtype (instruction, "ORR");
 									case "11111000000" -> //STUR
-										returnInstruction = Itype (instruction, "STUR");
+										returnInstruction = Dtype (instruction, "STUR");
 									case "11001011000" ->  // sub
 										returnInstruction = Rtype(instruction, "SUB");
 									case "11101011000" ->  // subs
 										returnInstruction = Rtype(instruction, "SUBS");
 									case "10011011000" -> //MUL
-										returnInstruction = Itype (instruction, "MUL");
+										returnInstruction = Rtype (instruction, "MUL");
 									case "11111111101" ->  // prnt
 										returnInstruction = Rtype(instruction, "PRNT");
 									case "11111111100" ->  // prnl
