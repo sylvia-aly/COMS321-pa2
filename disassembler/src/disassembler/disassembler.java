@@ -4,26 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-/*
- * Given in the piazza post of programming assignment 2
- * 
- * //This is in main():
-� � if (binary) {
-� � � fd = open(argv[1], O_RDONLY);
-� � � fstat(fd, &buf);
-� � � program = mmap(NULL, buf.st_size, PROT_READ | PROT_WRITE,
-� � � � � � � � � � �MAP_PRIVATE, fd, 0);
-� � � bprogram = calloc(buf.st_size / 4, sizeof (*bprogram));
-� � � for (i = 0; i < (buf.st_size / 4); i++) {
-� � � � program[i] = be32toh(program[i]);
-� � � � decode(program[i], bprogram + i);
-� � � }
-� � � emulate(bprogram, buf.st_size / 4, &m);
-
-� � � return 0;
-� � }
- */
-
 public class disassembler {
 	private static ArrayList<String> assemblyInstructions = new ArrayList<>();
 	private static ArrayList<String> instructionsThatNeedLabels = new ArrayList<>();
@@ -99,6 +79,20 @@ public class disassembler {
         addIndex(labelIndex, assembly);
         return assembly;		
 	}
+	
+	public static String Dtype(String instruction, String mnemonic) {
+        String assembly = mnemonic;
+        String addr = instruction.substring(11, 20);
+        addr = String.valueOf(Integer.parseInt(addr, 2));
+        String rn = instruction.substring(22, 27);
+        rn = register(rn);
+        String rt = instruction.substring(27, 32);
+        rt = register(rt);
+        assembly = assembly + " " + rt + ", [" + rn + ", #" + addr + "]";
+        return assembly;
+    }
+	
+	
 	
 	public static String decode(String instruction) {
 		String returnInstruction = "";
