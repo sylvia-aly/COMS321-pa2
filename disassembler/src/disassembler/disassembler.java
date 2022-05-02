@@ -80,6 +80,44 @@ public class disassembler {
         return assembly;		
 	}
 	
+    public static String CBtype(String instruction, String mnemonic) {
+        int posOfCurrentInst = assemblyInstructions.size() + 1;
+        int labelIndex;
+        String assembly = mnemonic;
+        String addr = instruction.substring(8, 27);
+        String rt = instruction.substring(27, 32);
+        if(addr.charAt(0) == '0'){
+            addr = String.valueOf(Integer.parseInt(addr, 2));
+        }
+        else{
+            addr = String.valueOf(getTwosComplement(addr));
+        }if (mnemonic.equals("B.")) {
+            rt = String.valueOf(Integer.parseInt(rt, 2));
+            switch (rt) {
+                case "0" -> assembly += "EQ" + " " + addr;
+                case "1" -> assembly += "NE" + " " + addr;
+                case "2" -> assembly += "HS" + " " + addr;
+                case "3" -> assembly += "LO" + " " + addr;
+                case "4" -> assembly += "MI" + " " + addr;
+                case "5" -> assembly += "PL" + " " + addr;
+                case "6" -> assembly += "VS" + " " + addr;
+                case "7" -> assembly += "VC" + " " + addr;
+                case "8" -> assembly += "HI" + " " + addr;
+                case "9" -> assembly += "LS" + " " + addr;
+                case "10" -> assembly += "GE" + " " + addr;
+                case "11" -> assembly += "LT" + " " + addr;
+                case "12" -> assembly += "GT" + " " + addr;
+                case "13" -> assembly += "LE" + " " + addr;
+            }
+        } else {
+            rt = register(rt);
+            assembly = assembly + " " + rt + ", " + addr;
+        }
+        labelIndex = Integer.parseInt(addr) + posOfCurrentInst;
+        addIndex(labelIndex, assembly);
+        return assembly;
+    }
+	
 	public static String Dtype(String instruction, String mnemonic) {
         String assembly = mnemonic;
         String addr = instruction.substring(11, 20);
