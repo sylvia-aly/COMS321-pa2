@@ -118,6 +118,26 @@ public class disassembler {
         return assembly;
     }
 	
+    public static String Rtype(String instruction, String mnemonic) {
+        String assembly = mnemonic;
+        String rm = instruction.substring(11, 16);
+        rm = register(rm);
+        String shamt = instruction.substring(16, 22);
+        shamt = String.valueOf(Integer.parseInt(shamt, 2));
+        String rn = instruction.substring(22, 27);
+        rn = register(rn);
+        String rd = instruction.substring(27, 32);
+        rd = register(rd);
+        assembly = switch (mnemonic) {
+            case "PRNT" -> assembly + " " + rd;
+            case "LSL", "LSR" -> assembly + " " + rd + ", " + rn + " #" + shamt;
+            case "PRNL", "DUMP", "HALT" -> assembly;
+            case "BR" -> assembly + " " + rn;
+            default -> assembly + " " + rd + ", " + rn + ", " + rm;
+        };
+        return assembly;
+    }
+    
 	public static String Dtype(String instruction, String mnemonic) {
         String assembly = mnemonic;
         String addr = instruction.substring(11, 20);
