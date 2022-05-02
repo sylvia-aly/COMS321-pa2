@@ -82,7 +82,24 @@ public class disassembler {
 		assembly = assembly + " " + rd + ", " + rn + ", #" + imm;
 		return assembly;
 	}
-
+	
+	public static String Btype(String instruction, String mnemonic) {
+		int posOfCurrentInst = assemblyInstructions.size() + 1;
+		int labelIndex;
+		String assembly = mnemonic;
+		String addr = instruction.substring(6,32);
+		if(addr.charAt(0) == '0'){
+            addr = String.valueOf(Integer.parseInt(addr, 2));
+        }
+        else{
+            addr = String.valueOf(getTwosComplement(addr));
+        }
+        assembly = assembly + " " + addr;
+        labelIndex = Integer.parseInt(addr) + posOfCurrentInst;
+        addIndex(labelIndex, assembly);
+        return assembly;		
+	}
+	
 	public static String decode(String instruction) {
 		String returnInstruction = "";
 		String opcode = instruction.substring(0, 6);
