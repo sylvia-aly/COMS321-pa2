@@ -1,1 +1,1 @@
-java disassembler/bin/disassembler/disassembler $1
+java disassembler $1

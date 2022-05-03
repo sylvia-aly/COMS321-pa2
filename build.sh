@@ -1,1 +1,1 @@
-java ./disassembler/src/disassembler/disassembler.java
+java ./disassembler.java
