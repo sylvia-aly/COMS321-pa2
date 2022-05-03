@@ -1,9 +1,7 @@
 package disassembler;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 public class disassembler {
@@ -34,7 +32,7 @@ public class disassembler {
 		printAssembly(assemblyInstructions);
 	}
 
-
+	
 	public static void convertBinaryToAssembly(ArrayList<String> instructions) {
 		assemblyInstructions = new ArrayList<>(instructions.size());
 		for (String instruction : instructions) {
@@ -152,6 +150,8 @@ public class disassembler {
 		assembly = assembly + " " + rt + ", [" + rn + ", #" + addr + "]";
 		return assembly;
 	}
+
+
 
 	public static String decode(String instruction) {
 		String returnInstruction = "";
@@ -309,3 +309,4 @@ public class disassembler {
 		instructionsThatNeedLabels.add(replacement);
 	}
 }
+
