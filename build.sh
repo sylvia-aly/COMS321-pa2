@@ -1,1 +1,2 @@
-java ./disassembler.java
+javac ./disassembler.java
+
