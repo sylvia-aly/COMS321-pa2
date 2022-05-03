@@ -1,0 +1,10 @@
+    ADDI X1, X1, #6
+    ADDI X17, X1,#0 
+    SUBI X1, X1,#1
+    ADD X18, X1,XZR 
+    SUBI X1, X1,#1
+    ADD X19, X1,XZR  
+PRNT X30
+	PRNL
+HALT
+DUMP
